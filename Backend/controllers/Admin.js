@@ -8,7 +8,7 @@ const router=express.Router()
 router.get('/get-users',verifyToken,adminRole,async (req,res)=>{
     try{
         const users=await Users.find();
-        console.log("users obtaines",users);
+        console.log("users obtained",users);
         res.status(200).json({success:true,message:"Users list obtained",Users:users});
     }catch(error){
         console.error("An error occurred ",error.message);

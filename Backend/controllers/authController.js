@@ -17,13 +17,17 @@ router.post('/signup',async (req,res,next)=>{
         Name = _.trim(Name);
         Email = _.trim(Email);
         Role = _.trim(Role);
+        console.log(Name,Email,Password)
         if (_.isEmpty(Name) || _.isEmpty(Email) || _.isEmpty(Password) || _.isEmpty(Role)) {
             return res.status(400).json({ message: "All fields are required." });
+        }
+        if (!/^[A-Za-z\s]+$/.test(Name)) {
+            return res.status(400).json({ message: "Name must contain only letters and spaces." });
         }
         if (!validator.isEmail(Email)) {
             return res.status(400).json({ message: "Invalid email format." });
         }
-        if (Password.length < 8) {
+        if (!_.isString(Password) || Password.length < 8) {
             return res.status(400).json({ message: "Password must be at least 8 characters." });
         }
         if(Role!=="user" &&  Role!=="admin"){
@@ -36,7 +40,10 @@ router.post('/signup',async (req,res,next)=>{
             res.status(401).json({ message: "Looks like you have already registered. Please Login" })
             return;
         }
-        const saltRounds = process.env.SaltRounds;
+        const saltRounds = parseInt(process.env.SaltRounds, 10);
+        if (isNaN(saltRounds)) {
+            throw new Error("SaltRounds must be a valid number");
+        }
         const salt = await bcrypt.genSalt(parseInt(saltRounds,10))
         const hashedpassword =await  bcrypt.hash(Password, salt);
         console.log("hashed password created")
@@ -62,13 +69,14 @@ router.post('/login',async (req,res,next)=>{
     let {Email,Password}=req.body 
     try{
         Email = _.trim(Email);
+        Password = _.trim(Password);
         if (_.isEmpty(Email) || _.isEmpty(Password)) {
             return res.status(400).json({ message: "All fields are required." });
         }
         if (!validator.isEmail(Email)) {
             return res.status(400).json({ message: "Invalid email format." });
         }
-        if (Password.length < 8) {
+        if (!_.isString(Password) || Password.length < 8) {
             return res.status(400).json({ message: "Password must be at least 8 characters." });
         }
 
@@ -92,6 +100,7 @@ router.post('/login',async (req,res,next)=>{
                 console.log(user);
                 req.body.UserId=user._id;
                 req.body.Role=user.Role;
+                req.body.Name=user.Name;
                 next();
             } else {
                 console.log("Password mismatch");

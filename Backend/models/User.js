@@ -1,15 +1,16 @@
 const mongoose = require("mongoose")
-const { isEmail,isAlpha}=require('validator')
+const { isEmail}=require('validator')
 
 const UserSchema=new mongoose.Schema({
     Name:{type:String,required:true,
         validate:{
             validator:function(Name){
-                return isAlpha(Name)
+                return /^[A-Za-z\s]+$/.test(Name);
             }
-        }
+        },
+         message: 'Name must only contain alphabetic characters and spaces.'
     },
-    Email:{type:String,required:true,
+    Email:{type:String,required:true,unique:true,
         validate:{
             validator:function(Email){
                 return isEmail(Email)

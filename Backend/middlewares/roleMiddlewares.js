@@ -1,20 +1,22 @@
-const jwt=require('jsonwebtoken')
 const dotenv=require('dotenv')
 const path=require('path')
 dotenv.config({path:path.resolve(__dirname,'../.env')});
 
-const userRole=async (req,res,next)=>{
-    console.log("user role",req.body.Role)
-    if (!req.body.Role || req.body.Role !== 'user') {
-        return res.status(403).json({ message: 'Access denied. Users only.' });
-    }
-    next();
+const checkRole = (requiredRole) => {
+    return (req, res, next) => {
+        // Check if role is provided and matches the required role
+        if (!req.body.Role) {
+            return res.status(400).json({ message: 'Role is required' });
+        }
+
+        if (req.body.Role !== requiredRole) {
+            return res.status(403).json({ message: `Access denied. ${requiredRole.charAt(0).toUpperCase() + requiredRole.slice(1)}s only.` });
+        }
+
+        next();
+    };
 }
-const adminRole=async (req,res,next)=>{
-    console.log(req.body.Role)
-    if (!req.body.Role || req.body.Role !== 'admin') {
-        return res.status(403).json({ message: 'Access denied. Admins only.' });
-    }
-    next();
-}
+const userRole = checkRole('user');
+const adminRole = checkRole('admin');
+
 module.exports={userRole,adminRole}

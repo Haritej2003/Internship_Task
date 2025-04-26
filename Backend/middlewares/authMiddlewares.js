@@ -16,19 +16,22 @@ const generateToken = async (req, res) => {
             success: true,
             message: "token is sent",
             token: token,
-            Role
+            user:{Name:req.body.Name,Email:req.body.Email,role:req.body.Role}
         })
     }
     catch (error) {
         console.log(error.message)
-        res.status(404).json({ message: "error while adding user in token" })
+        res.status(500).json({ message: "error while adding user in token" })
     }
 }
 
 
 const verifyToken = async (req, res, next) => {
     const token = req.header('Authorization');
-    if (!token || !token.startsWith('Bearer ')) {
+    if(!token){
+        return res.status(404).json({ message: 'No token provided' });
+    }
+    if (!token.startsWith('Bearer ')) {
         return res.status(401).json({ message: 'Invalid token format' });
     }
     const tokenValue = token.split(' ')[1];
@@ -46,8 +49,14 @@ const verifyToken = async (req, res, next) => {
         console.log("middleware completed")
         next();
     } catch (error) {
-        console.error("An error occured",error.message);
-        res.status(401).json({ message: 'Token is not valid' });
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token has expired' });
+        }
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({ message: 'Token is malformed' });
+        }
+        console.error("An error occurred", error.message);
+        return res.status(401).json({ message: 'Token is not valid' });
     }
 }
 module.exports = {

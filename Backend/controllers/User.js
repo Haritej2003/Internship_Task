@@ -1,8 +1,6 @@
 const express=require('express')
 const _ =require('lodash')
 const mongoose=require('mongoose')
-const validator = require('validator');
-const {Users}=require('../models/User.js')
 const {Task}=require('../models/Task.js')
 const {verifyToken}=require('../middlewares/authMiddlewares.js')
 const {userRole}=require('../middlewares/roleMiddlewares.js');
@@ -14,12 +12,12 @@ router.post('/create-task',verifyToken,userRole,async (req,res)=>{
         let {Title,Description,Status}=req.body;
         Title = _.trim(Title);
         Description = _.trim(Description);
-        Status = _.trim(Status);
+        Status =  _.trim(Status);
         console.log(`Title=${Title} Desc=${Description} Status=${Status}`)
          if (_.isEmpty(Title) || _.isEmpty(Description) || _.isEmpty(Status)) {
             return res.status(400).json({ message: "All fields are required." });
         }
-        if(Status!=='Pending' &&  Role!=='Completed'){
+        if(Status!=='Pending' &&  Status!=='Completed'){
             return res.status(400).json({ message: "Status should be either Pending or Completed only" });
         }
         const UserId=req.body.UserId;

@@ -1,19 +1,22 @@
 const mongoose = require("mongoose")
-const {isAlpha}=require('validator')
+const {isAlphanumeric}=require('validator')
 
 const TaskSchema=new mongoose.Schema({
     UserId:{
         
             type:mongoose.Schema.Types.ObjectId,
-            ref:'Users'
-        
+            ref:'Users',
+            required:true
     },
-    Title:{type:String,required:true,
+    Title:{
+      type:String,
+      required:true,
         validate:{
             validator:function(Title){
-                return isAlpha(Title)
+                return isAlphanumeric(Title.replace(/\s+/g, ''))
             }
-        }
+        },
+        message: 'Title can only contain letters, numbers, and spaces.'
     },
     Description:{type:String,required:true},   
     CreatedAt: {
@@ -32,5 +35,6 @@ const TaskSchema=new mongoose.Schema({
 
    
 })
+TaskSchema.index({ UserId: 1 });
 const Task=mongoose.model('Task',TaskSchema)
 module.exports= {Task}

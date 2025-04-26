@@ -11,7 +11,7 @@ const connectDB=async ()=>{
         console.log("Database connected successfully")
     }catch(error){
         console.error('Error while connecting to database:', error.message);
-        res.status(500).json({ message: 'Server Error' });
+        process.exit(1);
     }
 }
 module.exports={
