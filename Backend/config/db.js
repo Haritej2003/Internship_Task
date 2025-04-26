@@ -1,0 +1,19 @@
+const mongoose=require('mongoose')
+const path=require("path")
+const dotenv=require('dotenv')
+dotenv.config({path:path.resolve(__dirname,'../.env')})
+
+
+const MongoDB_URL=process.env.MongoDB_URL
+const connectDB=async ()=>{
+    try{
+        await mongoose.connect(MongoDB_URL);
+        console.log("Database connected successfully")
+    }catch(error){
+        console.error('Error while connecting to database:', error.message);
+        res.status(500).json({ message: 'Server Error' });
+    }
+}
+module.exports={
+    connectDB
+}
