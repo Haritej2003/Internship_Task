@@ -42,10 +42,9 @@ The **Task Manager API** is a robust backend system built for managing user task
 Create a `.env` file with the following variables:
 
 ```bash
-PORT=9000
-MONGODB_URL=your_mongodb_connection_string
-SALT_ROUNDS=10
-JWT_SECRET=your_jwt_secret_key_here
+MongoDB_URL=your_mongodb_connection_string
+SaltRounds=10
+JWTPassword=your_jwt_secret_key_here
 ```
 
 ---
