@@ -1,9 +1,9 @@
 
-# 📋 Task Manager API
+# 📋 Skygoal_Task_Manager_Project
 
 > **Developer:** Juvvagani Hari Tej  
 > **Email:** harijuvvagani@gmail.com  
-> **Project:** Backend Task Manager (Sky Goal Backend Development Internship Project)
+> **Project:** Backend Task Manager (Skygoal Backend Development Internship Project)
 
 ---
 
