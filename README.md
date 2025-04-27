@@ -4,7 +4,7 @@
 > **Developer:** Juvvagani Hari Tej  
 > **Email:** harijuvvagani@gmail.com  
 > **Project:** Backend Task Manager (Skygoal Backend Development Internship Project)
-
+> [Deployed URL](https://skygoal-task-manager-project-haritej.onrender.com/) 🚀
 ---
 
 ## 📖 Project Overview
