@@ -8,7 +8,7 @@ const {UserRoutes}=require("./controllers/User.js")
 const {AdminRoutes}=require("./controllers/Admin.js")
 const { errorHandler } = require('./middlewares/errorHandler.js'); 
 const path=require('path')
-const PORT=process.env.PORT || 5000
+const PORT=process.env.PORT || 9000
 const app=express()
 
 app.use(CORS({
