@@ -16,7 +16,7 @@ const generateToken = async (req, res) => {
             success: true,
             message: "token is sent",
             token: token,
-            user:{Name:req.body.Name,Email:req.body.Email,role:req.body.Role}
+            user:{UserId:req.body.UserId,Name:req.body.Name,Email:req.body.Email,role:req.body.Role}
         })
     }
     catch (error) {

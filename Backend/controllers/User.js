@@ -44,6 +44,30 @@ router.get('/get-tasks',verifyToken,userRole,async (req,res)=>{
         res.status(500).json({message:"Internal Server Error"});
     }
 })
+router.get('/get-task',verifyToken,userRole,async (req,res)=>{
+    
+    try{
+        const { UserId } = req.body;
+        const TaskId=req.query.taskId;
+        if (!UserId || !mongoose.Types.ObjectId.isValid(UserId)) {
+            return res.status(400).json({ message: 'Invalid UserId format' });
+        }
+        if (!TaskId || !mongoose.Types.ObjectId.isValid(TaskId)) {
+            return res.status(400).json({ message: 'Invalid TaskId format' });
+        }
+        console.log(`UserId: ${UserId}, TaskId: ${TaskId}`);
+        const task = await Task.findOne({ _id: TaskId, UserId });
+
+        if (!task) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+
+        res.status(200).json({ message: "Task Sent Successfully", Task: task });
+    }catch(error){
+        console.error("An error occurred",error.message);
+        res.status(500).json({message:"Internal Server Error"});
+    }
+})
 
 router.put('/update-task',verifyToken,userRole,async (req,res)=>{
     try{

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager API Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        h3 {
+            color: #2c3e50;
+            margin-top: 30px;
+        }
+        .profile {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .profile-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .profile-links a {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        .profile-links a:hover {
+            background-color: #2980b9;
+        }
+        .endpoint {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .endpoint h4 {
+            margin-top: 0;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+        }
+        .method {
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 14px;
+            min-width: 60px;
+            text-align: center;
+        }
+        .post { background-color: #27ae60; }
+        .get { background-color: #3498db; }
+        .put { background-color: #f39c12; }
+        .delete { background-color: #e74c3c; }
+        
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .tech {
+            background-color: #ecf0f1;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .note {
+            background-color: #ffe5d9;
+            padding: 15px;
+            border-left: 5px solid #f4a261;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Task Manager API</h1>
+        <p>A comprehensive backend solution for managing tasks with role-based access control</p>
+        <p><em>Developed as part of the SkyGoal company backend development internship selection process</em></p>
+    </header>
+
+    <section class="profile">
+        <h2>Developer Information</h2>
+        <p><strong>Name:</strong> Juvvagani Hari Tej</p>
+        <p><strong>Email:</strong> harijuvvagani@gmail.com</p>
+        <div class="profile-links">
+            <a href="https://github.com/Haritej2003" target="_blank">GitHub Profile</a>
+            <a href="https://www.linkedin.com/in/juvvagani-haritej/" target="_blank">LinkedIn</a>
+            <a href="https://www.linkedin.com/in/juvvagani-haritej/" target="_blank">Project Folder Github</a>
+            <a href="#Testing">Testing Instructions</a>
+        </div>
+        <div class="tech-stack">
+            <span class="tech">Node.js</span>
+            <span class="tech">Express</span>
+            <span class="tech">MongoDB</span>
+            <span class="tech">JWT Authentication</span>
+            <span class="tech">Bcrypt</span>
+        </div>
+    </section>
+
+    <h2>Project Overview</h2>
+    <p>This Task Manager API is a robust backend solution that allows both regular users and administrators to manage tasks. The system implements:</p>
+    <ul>
+        <li>JWT-based authentication system</li>
+        <li>Role-based access control (User/Admin roles)</li>
+        <li>Complete CRUD operations for tasks</li>
+        <li>User management capabilities for admins</li>
+        <li>Secure password handling with Bcrypt</li>
+        <li>Input sanitization and validation</li>
+    </ul>
+
+    <h2>API Endpoints</h2>
+
+    <h3>Authentication Endpoints</h3>
+    
+    <div class="endpoint">
+        <h4><span class="method post">POST</span> /auth/signup</h4>
+        <p>Register a new user in the system.</p>
+        <p><strong>Request Body:</strong></p>
+        <pre>
+        {
+            "Name":"Hari",
+            "Email":"acbbdsx@gmail.com",
+            "Password":"Abcd@123",
+            "Role":"user" // "user" or "admin"
+        }</pre>
+        <p><strong>Password Requirements:</strong></p>
+        <ul>
+            <li>Minimum 8 characters</li>
+            <li>At least 1 uppercase letter</li>
+            <li>At least 1 number</li>
+            <li>At least 1 special character</li>
+        </ul>
+        <p><strong>Response:</strong></p>
+        <pre>
+        {
+            "success": true,
+            "message": "token is sent",
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiO.....",
+            "user": {
+                "UserId": "680df008e082acf7b80f521e",
+                "Name": "Hari",
+                "Email": "acbbdsx@gmail.com",
+                "role": "user"
+            }
+        }</pre>
+    </div>
+
+    <div class="endpoint">
+        <h4><span class="method post">POST</span> /auth/login</h4>
+        <p>Login to the system with existing credentials.</p>
+        <p><strong>Request Body:</strong></p>
+        <pre>
+        {
+          "Email":"acbbdsx@gmail.com",
+          "Password":"Abcd@123"
+        }</pre>
+        <p><strong>Response:</strong></p>
+        <pre>
+        {
+            "success": true,
+            "message": "token is sent",
+            "token": "eyJhbGciOiJIUzI1NiIsInR.....",
+            "user": {
+                "Name": "Hari",
+                "Email": "acbbdsx@gmail.com",
+                "role": "user"
+            }
+        }</pre>
+    </div>
+
+    <h3>User Task Endpoints</h3>
+    
+    <div class="endpoint">
+        <h4><span class="method post">POST</span> /user/create-task</h4>
+        <p>Create a new task.</p>
+        <p><strong>Authorization:</strong> Required (Bearer Token)</p>
+        <p><strong>Request Body:</strong></p>
+        <pre>
+        {
+            "Title":"Eat",
+            "Description":"Eat At correct time",
+            "Status":"Pending"
+        }</pre>
+        <p><strong>Response:</strong></p>
+        <pre>
+        {
+            "message": "Task created successfully",
+            "Created_Task": {
+                "UserId": "680de0ac022faaba61b1610e",
+                "Title": "Eat",
+                "Description": "Eat At correct time",
+                "Status": "Pending",
+                "_id": "680de184022faaba61b16112",
+                "CreatedAt": "2025-04-27T07:49:24.334Z",
+                "__v": 0
+            }
+        }</pre>
+    </div>
+
+    <div class="endpoint">
+        <h4><span class="method get">GET</span> /user/get-tasks</h4>
+        <p>Get all tasks for the authenticated user.</p>
+        <p><strong>Authorization:</strong> Required (Bearer Token)</p>
+        <p><strong>Response:</strong></p>
+        <pre>
+        {
+            "message": "Tasks Sent Successfully",
+            "Tasks": 
+            [
+                {
+                    "_id": "680de184022faaba61b16112",
+                    "UserId": "680de0ac022faaba61b1610e",
+                    "Title": "Eat",
+                    "Description": "Eat At correct time",
+                    "Status": "Pending",
+                    "CreatedAt": "2025-04-27T07:49:24.334Z",
+                    "__v": 0
+                }
+                {
+                    "_id": "680de184022faaba61b1cc12",
+                    "UserId": "680de0ac022faaba61b1610e",
+                    "Title": "Eat",
+                    "Description": "Eat At correct time",
+                    "Status": "Pending",
+                    "CreatedAt": "2025-04-27T07:50:24.334Z",
+                    "__v": 0
+                }
+            ]
+        }</pre>
+    </div>
+
+    <div class="endpoint">
+        <h4><span class="method get">GET</span> /user/get-task?taskId="task-id"</h4>
+        <p>Get a specific task by ID.</p>
+        <p><strong>Authorization:</strong> Required (Bearer Token)</p>
+        <p><strong>Query Parameters:</strong></p>
+        <ul>
+            <li><code>taskId</code> - Task ID</li>
+        </ul>
+        <p><strong>Response:</strong></p>
+        <pre>
+        {
+            "message": "Task Sent Successfully",
+            "Task": 
+            {
+                "_id": "680df1659d4bb6653b58ceb5",
+                "UserId": "680df1459d4bb6653b58ceb1",
+                "Title": "Eat",
+                "Description": "Eat At correct time",
+                "Status": "Pending",
+                "CreatedAt": "2025-04-27T08:57:09.386Z",
+                "__v": 0
+            }
+        }</pre>
+    </div> 
+
+    <div class="endpoint">
+        <h4><span class="method put">PUT</span> /user/update-task?taskId="task-id"</h4>
+        <p>Update a specific task by ID.</p>
+        <p><strong>Authorization:</strong> Required (Bearer Token)</p>
+        <p><strong>URL Parameters:</strong></p>
+        <ul>
+            <li><code>taskId</code> - Task ID</li>
+        </ul>
+        <p><strong>Request Body:</strong></p>
+        <pre>
+        {
+            "Title": "Eat",
+             "Description": "Eat at correct time",
+             "Status": "Completed"
+        }</pre>
+        <p><strong>Response:</strong></p>
+        <pre>
+        {
+            "success": true,
+            "message": "Task Updated Successfully",
+            "Updated_Task": 
+            {
+                "_id": "680de184022faaba61b16112",
+                "UserId": "680de0ac022faaba61b1610e",
+                "Title": "Eat",
+                "Description": "Eat at correct time",
+                "Status": "Completed",
+                "CreatedAt": "2025-04-27T07:49:24.334Z",
+                "__v": 0
+            }
+        }</pre>
+    </div>
+
+    <div class="endpoint">
+        <h4><span class="method delete">DELETE</span> /user/delete-task?taskId="task-id"</h4>
+        <p>Delete a specific task by ID.</p>
+        <p><strong>Authorization:</strong> Required (Bearer Token)</p>
+        <p><strong>URL Parameters:</strong></p>
+        <ul>
+            <li><code>taskId</code> - Task ID</li>
+        </ul>
+        <p><strong>Response:</strong></p>
+        <pre>
+        {
+            "success": true,
+            "message": "Task deleted successfully",
+            "Deleted_Task": 
+            {
+                "_id": "680de184022faaba61b16112",
+                "UserId": "680de0ac022faaba61b1610e",
+                "Title": "Dance",
+                "Description": "Eat at correct time",
+                "Status": "Completed",
+                "CreatedAt": "2025-04-27T07:49:24.334Z",
+                "__v": 0
+            }
+        }</pre>
+    </div>
+
+    <h3>Admin User Management Endpoints</h3>
+    
+    <div class="endpoint">
+        <h4><span class="method get">GET</span> /admin/get-users</h4>
+        <p>Get all users (Admin only).</p>
+        <p><strong>Authorization:</strong> Required (Bearer Token with Admin role)</p>
+        <p><strong>Response:</strong></p>
+        <pre>
+        {
+            "success": true,
+            "message": "Users list obtained",
+            "count": 4,
+            "Users": [
+                {
+                    "_id": "680b697ae66dd25aac5da078",
+                    "Name": "Hari",
+                    "Email": "abcd@gmail.com",
+                    "Role": "user",
+                    "__v": 0
+                },
+                {
+                    "_id": "680b89cd04d7a34ac719d234",
+                    "Name": "Hari",
+                    "Email": "abcdgfe@gmail.com",
+                    "Role": "user",
+                    "__v": 0
+                },
+                {
+                    "_id": "680b8ea6c463ac3a540e1b93",
+                    "Name": "Hari",
+                    "Email": "abcdghfe@gmail.com",
+                    "Role": "admin",
+                    "__v": 0
+                },
+                {
+                    "_id": "680de0ac022faaba61b1610e",
+                    "Name": "Hari",
+                    "Email": "acbdsx@gmail.com",
+                    "Role": "user",
+                    "__v": 0
+                }
+            ]
+        }</pre>
+    </div>
+
+   <div class="endpoint">
+        <h4><span class="method get">GET</span> /admin/get-user?userId="user-id"</h4>
+        <p>Get a specific user by ID (Admin only).</p>
+        <p><strong>Authorization:</strong> Required (Bearer Token with Admin role)</p>
+        <p><strong>Query Parameters:</strong></p>
+        <ul>
+            <li><code>userId</code> - User ID</li>
+        </ul>
+        <p><strong>Response:</strong></p>
+        <pre>
+        {
+            "success": true,
+            "message": "User obtained",
+            "User": {
+                "_id": "680de0ac022faaba61b1610e",
+                "Name": "Hari",
+                "Email": "acbdsx@gmail.com",
+                "Role": "user",
+                "__v": 0
+            }
+        }</pre>
+    </div> 
+
+    <div class="endpoint">
+        <h4><span class="method delete">DELETE</span> /admin/delete-user?userId="user-id"</h4>
+        <p>Delete a specific user by ID (Admin only).</p>
+        <p><strong>Authorization:</strong> Required (Bearer Token with Admin role)</p>
+        <p><strong>Query Parameters:</strong></p>
+        <ul>
+            <li><code>userId</code> - User ID</li>
+        </ul>
+        <p><strong>Response:</strong></p>
+        <pre>
+        {
+            "success": true,
+            "message": "User and related tasks deleted successfully",
+            "Deleted_User": {
+                "_id": "680def7e48a40152380569bd",
+                "Name": "Hari",
+                "Email": "acbdx@gmail.com",
+                "Password": "$2b$10$3E.ecoXxmJ9NS/RUOP2HYOXTck6EVw.9sLbyyyh.BLTzl2Em9EjN2",
+                "Role": "user",
+                "__v": 0
+            },
+            "Deleted_Tasks_Count": 2
+        }</pre>
+    </div>
+
+    <h2 id="Testing">Testing API Endpoints with Postman</h2>
+    
+    <h3>Setting Up Authentication</h3>
+    <ol>
+        <li>First, create a user using the <code>POST /auth/signup</code> endpoint</li>
+        <li>Copy the token from the response</li>
+        <li>For subsequent requests, add the token to the Authorization header:
+            <ul>
+                <li>In the Headers tab, add a key named <code>Authorization</code></li>
+                <li>Set the value to <code>Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code> (your actual token)</li>
+            </ul>
+        </li>
+    </ol>
+
+    <div class="note">
+        <p><strong>Note:</strong> JWT tokens expire after 1 hour. If you receive a 401 Token expired  response, you may need to log in again to obtain a new token.</p>
+    </div>
+    
+
+<h2>Environment Setup (.env File)</h2>
+<p>To run this API, you need to set up the following environment variables in a <code>.env</code> file at the root of your project:</p>
+
+<div class="endpoint">
+    <pre>
+PORT=9000
+MONGODB_URL= your connection string
+SALT_ROUNDS=10
+JWT_SECRET=your_jwt_secret_key_here
+</pre>
+    
+    <p><strong>Variable Descriptions:</strong></p>
+    <ul>
+        <li><code>PORT</code>: The port on which the server will run (default: 9000)</li>
+        <li><code>MONGODB_URL</code>: Your MongoDB connection string</li>
+        <li><code>SALT_ROUNDS</code>: Number of rounds for bcrypt password hashing (10 is recommended)</li>
+        <li><code>JWT_SECRET</code>: A secret key used to sign JWT tokens (keep this secure!)</li>
+        
+    </ul>
+</div>
+    <h3>Testing Role-Based Access</h3>
+    <p>To test admin functionalities:</p>
+    <ol>
+        <li>Register a user with the role set to "admin"</li>
+        <li>Log in with the admin credentials</li>
+        <li>Use the admin token to access admin-specific endpoints</li>
+    </ol>
+
+    <h2>Instructions for Users</h2>
+    
+    <h3>Getting Started</h3>
+    <ol>
+        <li>Register a new account using the signup endpoint</li>
+        <li>Copy received authentication token</li>
+        <li>Include the token in the Authorization header for all subsequent requests</li>
+        <li>Create, read, update, and delete tasks as needed</li>
+    </ol>
+
+    <h3>Best Practices</h3>
+    <ul>
+        <li>Keep your authentication token secure and do not share it</li>
+        <li>Remember to include the "Bearer " prefix before your token in the Authorization header</li>
+        <li>Ensure that your password meets the minimum requirements for security</li>
+    </ul>
+
+    <h2>Technical Implementation</h2>
+    <p>This Task Manager API is built using:</p>
+    <ul>
+        <li><strong>Node.js</strong> - Server-side JavaScript runtime</li>
+        <li><strong>Express</strong> - Web framework for Node.js</li>
+        <li><strong>MongoDB</strong> - NoSQL database for storing user and task data</li>
+        <li><strong>JWT (JSON Web Token)</strong> - For secure authentication</li>
+        <li><strong>Bcrypt</strong> - For password hashing</li>
+    </ul>
+
+    <p>Security measures implemented:</p>
+    <ul>
+        <li>Input sanitization to prevent injection attacks</li>
+        <li>Password hashing for secure storage</li>
+        <li>JWT-based authentication to protect routes</li>
+        <li>Role-based access control for restricted endpoints</li>
+        <li>Validation of all incoming data</li>
+    </ul>
+
+    <footer style="margin-top: 50px; text-align: center; padding: 20px; color: #777;">
+        <p>© 2025 Task Manager API | Developed by Juvvagani Hari Tej</p>
+        <p>Created for SkyGoal company backend development internship selection process</p>
+    </footer>
+</body>
+</html>

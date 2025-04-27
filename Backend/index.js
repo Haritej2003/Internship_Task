@@ -7,7 +7,7 @@ const {AuthRoutes}=require("./controllers/authController.js")
 const {UserRoutes}=require("./controllers/User.js")
 const {AdminRoutes}=require("./controllers/Admin.js")
 const { errorHandler } = require('./middlewares/errorHandler.js'); 
-
+const path=require('path')
 const PORT=process.env.PORT || 5000
 const app=express()
 
@@ -26,6 +26,9 @@ app.use(rateLimit({
     message: "Too many login attempts. Please try again later.",
 }));
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'documentation.html'));
+  });
 app.use("/auth",AuthRoutes)
 app.use("/user",UserRoutes)
 app.use("/admin",AdminRoutes)
