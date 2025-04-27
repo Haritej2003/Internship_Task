@@ -27,7 +27,7 @@ app.use(rateLimit({
 }));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'documentation.html'));
+    res.sendFile(path.join(__dirname, 'public', 'Documentation.html'));
   });
 app.use("/auth",AuthRoutes)
 app.use("/user",UserRoutes)
