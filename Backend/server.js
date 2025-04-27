@@ -1,4 +1,6 @@
 const express=require('express')
+const app=express()
+app.set('trust proxy', 1);
 const CORS=require('cors')
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -9,7 +11,6 @@ const {AdminRoutes}=require("./controllers/Admin.js")
 const { errorHandler } = require('./middlewares/errorHandler.js'); 
 const path=require('path')
 const PORT=process.env.PORT || 9000
-const app=express()
 
 app.use(CORS({
     origin: 'http://localhost:5174', 
