@@ -7,7 +7,6 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const generateToken = async (req, res) => {
     const { UserId,Role } = req.body;
     try {
-        console.log(`User id=${UserId}   Role=${Role}`)
         const value = {
             UserId,Role
         }
@@ -20,7 +19,7 @@ const generateToken = async (req, res) => {
         })
     }
     catch (error) {
-        console.log(error.message)
+        console.error("An error occurred",error.message)
         res.status(500).json({ message: "error while adding user in token" })
     }
 }
@@ -35,10 +34,8 @@ const verifyToken = async (req, res, next) => {
         return res.status(401).json({ message: 'Invalid token format' });
     }
     const tokenValue = token.split(' ')[1];
-    console.log("tokenValue");
     try {
         const decoded = jwt.verify(tokenValue, process.env.JWTPassword);
-        console.log(decoded);
         if (!mongoose.Types.ObjectId.isValid(decoded.UserId)) {
             return res.status(400).json({ message: 'Invalid UserId in token' });
         }
@@ -46,7 +43,6 @@ const verifyToken = async (req, res, next) => {
         const UserId = new mongoose.Types.ObjectId(decoded.UserId);
         req.body={...req.body,UserId,Role:decoded.Role}
         
-        console.log("middleware completed")
         next();
     } catch (error) {
         if (error.name === 'TokenExpiredError') {

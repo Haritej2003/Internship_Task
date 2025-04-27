@@ -17,7 +17,6 @@ router.post('/signup',async (req,res,next)=>{
         Name = _.trim(Name);
         Email = _.trim(Email);
         Role = _.trim(Role);
-        console.log(Name,Email,Password)
         if (_.isEmpty(Name) || _.isEmpty(Email) || _.isEmpty(Password) || _.isEmpty(Role)) {
             return res.status(400).json({ message: "All fields are required." });
         }
@@ -36,7 +35,6 @@ router.post('/signup',async (req,res,next)=>{
 
         const isUserExist = await Users.findOne({ Email })
         if (isUserExist) {
-            console.log("user already exists")
             res.status(401).json({ message: "Looks like you have already registered. Please Login" })
             return;
         }
@@ -46,12 +44,10 @@ router.post('/signup',async (req,res,next)=>{
         }
         const salt = await bcrypt.genSalt(parseInt(saltRounds,10))
         const hashedpassword =await  bcrypt.hash(Password, salt);
-        console.log("hashed password created")
         const user = new Users({
             Name, Email, Password: hashedpassword,Role
         })
         const result = await user.save();
-        console.log("user added",result)
         req.body.UserId=result._id;
         req.body.Role=result.Role;
       
@@ -82,28 +78,21 @@ router.post('/login',async (req,res,next)=>{
 
         const user = await Users.findOne({ Email })
         if (!user) {
-            console.log("user does not exist")
             res.status(404).json({ message: "user does not exists" })
             return;
         }
         const HashedPassword = user.Password;
-        
-        // password verification
         bcrypt.compare(Password, HashedPassword, (err, result) => {
             if (err) {
-                console.log("error while verifying user ", err.message);
                 res.status(403).json({ message: "error while verifying user" })
                 return;
             }
             if (result) {
-                console.log("User verified and logged in")
-                console.log(user);
                 req.body.UserId=user._id;
                 req.body.Role=user.Role;
                 req.body.Name=user.Name;
                 next();
             } else {
-                console.log("Password mismatch");
                 res.status(403).json({ message: "Invalid password" });
                 return;
             }

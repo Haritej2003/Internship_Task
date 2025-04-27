@@ -4,7 +4,6 @@ dotenv.config({path:path.resolve(__dirname,'../.env')});
 
 const checkRole = (requiredRole) => {
     return (req, res, next) => {
-        // Check if role is provided and matches the required role
         if (!req.body.Role) {
             return res.status(400).json({ message: 'Role is required' });
         }

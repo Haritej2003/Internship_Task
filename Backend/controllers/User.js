@@ -13,7 +13,6 @@ router.post('/create-task',verifyToken,userRole,async (req,res)=>{
         Title = _.trim(Title);
         Description = _.trim(Description);
         Status =  _.trim(Status);
-        console.log(`Title=${Title} Desc=${Description} Status=${Status}`)
          if (_.isEmpty(Title) || _.isEmpty(Description) || _.isEmpty(Status)) {
             return res.status(400).json({ message: "All fields are required." });
         }
@@ -36,7 +35,6 @@ router.get('/get-tasks',verifyToken,userRole,async (req,res)=>{
         if (!UserId || !mongoose.Types.ObjectId.isValid(UserId)) {
             return res.status(400).json({ message: 'Invalid UserId format' });
           }
-        console.log(UserId)
         const task=await Task.find({UserId});
         res.status(200).json({message:"Tasks Sent Successfully",Tasks:task});
     }catch(error){
@@ -55,7 +53,6 @@ router.get('/get-task',verifyToken,userRole,async (req,res)=>{
         if (!TaskId || !mongoose.Types.ObjectId.isValid(TaskId)) {
             return res.status(400).json({ message: 'Invalid TaskId format' });
         }
-        console.log(`UserId: ${UserId}, TaskId: ${TaskId}`);
         const task = await Task.findOne({ _id: TaskId, UserId });
 
         if (!task) {

@@ -9,7 +9,6 @@ const router=express.Router()
 router.get('/get-users',verifyToken,adminRole,async (req,res)=>{
     try{
         const users=await Users.find().select('-Password');
-        console.log("users obtained",users);
         res.status(200).json({success:true,message:"Users list obtained",count:users.length,Users:users});
     }catch(error){
         console.error("An error occurred ",error.message);
@@ -23,7 +22,6 @@ router.get('/get-user',verifyToken,adminRole,async (req,res)=>{
             return res.status(400).json({ message: 'Invalid UserId format' });
           }
         const user=await Users.findById(userId).select('-Password');
-        console.log("user obtained",user);
         res.status(200).json({success:true,message:"User obtained",User:user});
     }catch(error){
         console.error("An error occurred ",error.message);
@@ -38,13 +36,11 @@ router.delete('/delete-user',verifyToken,adminRole,async (req,res)=>{
             return res.status(400).json({ message: 'Invalid UserId format' });
           }
         const user=await Users.findByIdAndDelete(userId);
-        console.log(user)
         if(!user){
             res.status(404).json({message:"User not found"});
             return;
         }
         const deletedTasks = await Task.deleteMany({ UserId: userId });
-        console.log("User deleted successfully");
         res.status(200).json({
             success: true,
             message: "User and related tasks deleted successfully",
