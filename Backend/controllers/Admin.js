@@ -35,7 +35,7 @@ router.delete('/delete-user',verifyToken,adminRole,async (req,res)=>{
         if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({ message: 'Invalid UserId format' });
           }
-        const user=await Users.findByIdAndDelete(userId);
+        const user=await Users.findByIdAndDelete(userId).select("-Password");
         if(!user){
             res.status(404).json({message:"User not found"});
             return;
